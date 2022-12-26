@@ -1,0 +1,28 @@
+
+/////////// server /////////////////
+
+npm init -y
+
+npm install express
+
+  npm install -g nodemon   // מותקן גלובלי
+
+  git init
+
+  npm install dotenv
+  
+npm install cors
+npm install uuid
+
+
+
+
+
+  ///////////////  client ////////////////
+
+  npx create-react-app my-app-in-small-letters
+
+  make git
+
+  npm i axios
+
