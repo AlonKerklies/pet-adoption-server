@@ -23,7 +23,7 @@ router.post("/", (req, res) => {
     console.log("i get it from the front", req.body);
     const newPet = {
       ...req.body,
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       date: new Date(),
     };
     ///TODO: Add:await before "addPetModel"

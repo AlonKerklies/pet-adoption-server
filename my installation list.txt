@@ -14,8 +14,8 @@ npm install express
 npm install cors
 npm install uuid
 
-
-
+npm install morgan  // from middleware class with yonatan before and after break 1:30~
+npm install ajv
 
 
   ///////////////  client ////////////////

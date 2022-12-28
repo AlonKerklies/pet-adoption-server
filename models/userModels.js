@@ -5,7 +5,7 @@ const pathToUserDB = path.resolve(__dirname, "../dataBase/usersDB.json");
 
 function readAllUsersModel() {
     try {
-      console.log(pathToUserDB);
+      // console.log(pathToUserDB);
       const UsersList = fs.readFileSync(pathToUserDB);
       return JSON.parse(UsersList);
     } catch (err) {
@@ -28,4 +28,11 @@ function addUserModel(newUser) {
   }
 
 
-  module.exports = { readAllUsersModel, addUserModel  };
+
+  function doesThisUserExist(userMail) {
+    const allUsers  = readAllUsersModel()
+const foundUser = allUsers.find(user => user.email === userMail)
+return foundUser;
+  };
+
+  module.exports = { readAllUsersModel, addUserModel, doesThisUserExist  };
