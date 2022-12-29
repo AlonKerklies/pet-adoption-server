@@ -35,4 +35,16 @@ const foundUser = allUsers.find(user => user.email === userMail)
 return foundUser;
   };
 
+//   function doesThisPasswordMatchUser(email,password) {
+//     const allUsers  = readAllUsersModel()
+// const UserInSystem = allUsers.find(user => user.email = email)
+
+// console.log("system pasword - ", UserInSystem.password);
+// console.log("he send that - ", password);
+// const isPasswordMatch = (password === UserInSystem.password)
+// return isPasswordMatch;
+//   };
+
+
+
   module.exports = { readAllUsersModel, addUserModel, doesThisUserExist  };

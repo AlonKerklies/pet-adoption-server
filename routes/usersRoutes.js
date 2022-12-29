@@ -1,19 +1,18 @@
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
-const { checkIfUserExists, validateNewUserBody } = require("../middleware/signUpMiddleware");
+const { checkIfUserExistsforSignUP, validateNewUserBody } = require("../middleware/signUpMiddleware");
+const { checkIfUserExistsforLogin, checkPasswordMatch } = require("../middleware/loginMiddleware");
 const { readAllUsersModel, addUserModel } = require("../models/userModels");
 const { userSignUpSchema } = require("../schemas/userSignUpSchema")
- 
 const usersController = require("../controllers/usersController");
 
 router.post( "/newuser",
   validateNewUserBody(userSignUpSchema) , // we are calling this function and inside it express will call;
 // TODO: isPasswordMatch // 
-  checkIfUserExists, //express will call it;
+checkIfUserExistsforSignUP, //express will call it;
 // TODO: encrepthPassword // 
 // TODO: usercontroler.signup // 
-
   async (req, res) => {
     try {
       // console.log("server got it from the front", req.body);
@@ -38,6 +37,30 @@ router.post( "/newuser",
     }
   }
 );
+
+
+router.post( 
+  "/login",
+  checkIfUserExistsforLogin,
+checkPasswordMatch,
+  
+  (req, res) => {
+    try {
+
+      res.send("user match with password");
+      
+      // res.send(200);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  }
+);
+
+
+
+
+
 
 module.exports = router;
 

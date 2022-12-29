@@ -3,7 +3,7 @@ const ajv = new Ajv();
 const  {doesThisUserExist } = require('../models/userModels')
 
 
-function checkIfUserExists(req, res, next){
+function checkIfUserExistsforSignUP(req, res, next){
 // console.log(req.body.email); 
  const {email} = req.body;
  console.log(email);
@@ -33,4 +33,4 @@ function validateNewUserBody(schema) {
 
 
 
-module.exports = {checkIfUserExists, validateNewUserBody}
+module.exports = {checkIfUserExistsforSignUP, validateNewUserBody}
