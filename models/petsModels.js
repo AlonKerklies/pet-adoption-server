@@ -5,7 +5,9 @@ const pathToPetsDB = path.resolve(__dirname, "../dataBase/petsDB.json");
 function readAllPetsModel() {
   try {
     console.log(pathToPetsDB);
+    console.log("ssssssssssss");
     const PetsList = fs.readFileSync(pathToPetsDB);
+    console.log("PetsList", PetsList.length);
     return JSON.parse(PetsList);
   } catch (err) {
     console.log(err);
@@ -124,10 +126,18 @@ function addPetModel(newPet) {
 
 function deletePetModel(petId) {
   try {
-    console.log("deletePetModel   " )
+    console.log("this is the id    " , petId  )
+         const idString =   JSON.stringify(petId)
+         const idparse =   JSON.parse(petId)
+         console.log("idString",idString   )
+         console.log("idparse",idparse   )
+         console.log("petId",petId   )
+         console.log("[petId]",[petId]  )
+         console.log("{petId} ",{petId}  )
     const allPets = readAllPetsModel();
-     const updatedArray = allPets.filter((pet) => pet.id !== petId);
- 
+    console.log("allPets.length   " , allPets.length)
+     const updatedArray = allPets.filter((pet) => pet.id !== idparse);
+     console.log("updatedArray.length  ",updatedArray.length   )
     fs.writeFileSync(pathToPetsDB, JSON.stringify(updatedArray));
  
     return true;

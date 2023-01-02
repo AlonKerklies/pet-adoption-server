@@ -16,8 +16,11 @@ npm install uuid
 
 npm install morgan  // from middleware class with yonatan before and after break 1:30~
 npm install ajv
+npm install knex -g
+ npm install knex
+ npm install mysql
 
-
+ 
   ///////////////  client ////////////////
 
   npx create-react-app my-app-in-small-letters

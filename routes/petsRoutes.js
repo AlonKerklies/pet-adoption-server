@@ -1,6 +1,7 @@
 //  ('/pets', petsRoute) מה שיגיע מ
 
 const express = require("express");
+const crypto = require("crypto");
 const {
   TakeID,
   ForEach,
@@ -15,55 +16,35 @@ const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 
 const petsController = require("../controllers/petController");
-
+const {addPet} = require("../controllers/petController");
 ///TODO: Add: add validation middleware to POST and PUT
 ///TODO: Add:async after "router.post"
 
-router.post("/", (req, res) => {
-  try {
-    console.log("i get it from the front", req.body);
-    const newPet = {
-      ...req.body,
-      id: crypto.randomUUID(),
-      date: new Date(),
-    };
-    ///TODO: Add:await before "addPetModel"
-    const petAdded = addPetModel(newPet); //   אם זה קרה והוא החזיר  חיובי
-    if (petAdded) {
-      res.send(newPet);
-    } //  החיה עם ה איי.די והתאריך תחזור לפרונט
-    // const {name, breed, color, height, weight, hypoallergnic, adoptionStatus } = req.body;
-    // const newPet = {
-    //     name: name,
-    //     breed: breed,
-    //     color: color,
-    //     height: height,
-    //     weight: weight,
-    //     hypoallergnic: hypoallergnic,
-    //     adoptionStatus: adoptionStatus,
-    //     id: uuidv4(),
-    //     date: new Date()
-    // }
+router.post("/", addPet);
 
-    res.send(req.body); // send it back to the front
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
+router.get("/",petsController.getAllpet );
 
-router.get("/", (req, res) => {
-  const reqQuery = req.query
+router.delete("/:petId", petsController.deletePet);
+// router.post("/", (req, res) => {
+//   try {
+//     console.log("i get it from the front", req.body);
+//     const newPet = {
+//       ...req.body,
+//       id: crypto.randomUUID(),
+//       date: new Date(),
+//     };
+//     ///TODO: Add:await before "addPetModel"
+//     const petAdded = addPetModel(newPet); //   אם זה קרה והוא החזיר  חיובי
+//     if (petAdded) {
+//       res.send(newPet);
+//     } //  החיה עם ה איי.די והתאריך תחזור לפרונט
+//     res.send(req.body); // send it back to the front
+//    } catch (err) {
+//     console.log(err);
+//     res.status(500).send(err);
+//   }
+// });
 
-    try {
-    console.log("got to get root");
-    const allPets = SearchExtended(req);
-    // const allPets = readOnlySpecie(req);
-    res.send(allPets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
 
     // if (Object.keys(reqQuery).length === 0 && reqQuery.constructor === Object){
       
@@ -92,7 +73,7 @@ router.get("/", (req, res) => {
 
     
 
-});
+
 
 // router.get("/:Specie", (req, res) => {
 router.get("/Specie", (req, res) => {
@@ -137,7 +118,7 @@ router.get("/id/:petId", (req, res) => {
   }
 });
 
-router.delete("/:petId", petsController.deletePet);
+
 
 // router.delete('/:petID', (req, res) => {
 //     console.log("start del in server");
