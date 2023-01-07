@@ -1,8 +1,8 @@
 
 exports.up = function(knex) {
     return knex.schema.alterTable('pets', (table)=>{
-        table.integer('pppppp');
-      table.renameColumn('name', 'petname');
+            // table.integer('pppppp'); // works
+            // table.renameColumn('name', 'petname');// works
  
     })
   };

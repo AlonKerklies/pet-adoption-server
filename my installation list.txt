@@ -19,8 +19,12 @@ npm install ajv
 npm install knex -g
  npm install knex
  npm install mysql
+ npm install bcrypt
+ npm install jsonwebtoken
+ npm install cookie-parser
+npm install multer 
+npm install cloudinary
 
- 
   ///////////////  client ////////////////
 
   npx create-react-app my-app-in-small-letters

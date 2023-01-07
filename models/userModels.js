@@ -1,6 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const pathToUserDB = path.resolve(__dirname, "../dataBase/usersDB.json");
+const fs = require("fs");  // old connection to JSONfile
+const path = require("path");  // old connection to JSONfile
+const pathToUserDB = path.resolve(__dirname, "../dataBase/usersDB.json"); // old connection to JSONfile
+ 
+const dbConnection = require('../knex/knex') // the new cinnection to sql
 
 
 function readAllUsersModel() {
@@ -15,25 +17,41 @@ function readAllUsersModel() {
   
 
 
-function addUserModel(newUser) {
+async function addUserModel(newUser) {
     try {
-      ///TODO: Add:' await' before  readAllPetsModel"
-      const allUsers = readAllUsersModel();
-      allUsers.push(newUser);
-      fs.writeFileSync(pathToUserDB, JSON.stringify(allUsers));
-      return true;
+      console.log("try insert this yo sql ",newUser );
+      // const allUsers = readAllUsersModel(); allUsers.push(newUser); fs.writeFileSync(pathToUserDB, JSON.stringify(allUsers));
+      const [id] = await dbConnection.from('users').insert(newUser); // this will signup the user
+      console.log("come back from sql " ,id );
+      return id;
     } catch (err) {
       console.log(err);
     }
   }
 
 
-
-  function doesThisUserExist(userMail) {
+/////// old
+  function doesThisUserExist  (userMail) {
     const allUsers  = readAllUsersModel()
 const foundUser = allUsers.find(user => user.email === userMail)
 return foundUser;
   };
+
+  /////// new
+const getUserByEmailModel = async (email) =>{
+  console.log(" inside getUserByEmailModel " );
+  try{
+// const user = await dbConnection.from('users').where({email: email}); // comeback empty
+const user = await dbConnection.from('users').where({email: email}).first();  // comeback undefined
+ 
+ 
+return user
+  }catch(err){
+    console.log(err);
+
+}}
+
+
 
 //   function doesThisPasswordMatchUser(email,password) {
 //     const allUsers  = readAllUsersModel()
@@ -47,4 +65,21 @@ return foundUser;
 
 
 
-  module.exports = { readAllUsersModel, addUserModel, doesThisUserExist  };
+  module.exports = { readAllUsersModel, addUserModel, doesThisUserExist, getUserByEmailModel  };
+
+
+
+
+
+  // function addUserModel(newUser) {
+  //   try {
+  //     ///TODO: Add:' await' before  readAllPetsModel"
+  //     const allUsers = readAllUsersModel();
+  //     allUsers.push(newUser);
+  //     fs.writeFileSync(pathToUserDB, JSON.stringify(allUsers));
+  //     return true;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+

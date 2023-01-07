@@ -10,21 +10,55 @@ const {
   readAllPetsModel,
   deletePetModel,
   readOnlySpecie,
-  SearchExtended
+  SearchExtended,
 } = require("../models/petsModels");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
-
+const { auth}  = require ('../middleware/usersMiddleware')
 const petsController = require("../controllers/petController");
-const {addPet} = require("../controllers/petController");
+const {upload} = require('../middleware/imageMiddleware');
+// const { addPet } = require("../controllers/petController");
 ///TODO: Add: add validation middleware to POST and PUT
 ///TODO: Add:async after "router.post"
 
-router.post("/", addPet);
+router.post("/",auth, upload.single('picture'),  petsController.addPet); //'picture' isthe name in the formdata
 
-router.get("/",petsController.getAllpet );
+router.get("/", petsController.getAllpet);
 
-router.delete("/:petId", petsController.deletePet);
+router.delete("/:petId",   petsController.deletePet);
+
+router.get("/search", (req, res) => {
+  console.log("req.query");
+  console.log(req.query);
+});
+
+router.get("/id/:petId", (req, res) => {
+  try {
+    console.log("id");
+    const allPets = readThisId(req);
+    res.send(allPets);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+router.post("/ForEach", (req, res) => {
+  try {
+    console.log("ForEach");
+    const petAdded = ForEach(req); //   אם זה קרה והוא החזיר  חיובי
+    if (ForEach) {
+      res.send("ssssss");
+    }
+    res.send(req.body); // send it back to the front
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+module.exports = router;
+
 // router.post("/", (req, res) => {
 //   try {
 //     console.log("i get it from the front", req.body);
@@ -45,53 +79,39 @@ router.delete("/:petId", petsController.deletePet);
 //   }
 // });
 
+// if (Object.keys(reqQuery).length === 0 && reqQuery.constructor === Object){
 
-    // if (Object.keys(reqQuery).length === 0 && reqQuery.constructor === Object){
-      
-    //    try {console.log("2222222222" );
-    //   const allPets = readAllPetsModel();
-    //   res.send(allPets);
-    // } catch (err) { console.log("33333" );
-    //   console.log(err);
-    //   res.status(500).send(err);
-    // }
-    // }
+//    try {console.log("2222222222" );
+//   const allPets = readAllPetsModel();
+//   res.send(allPets);
+// } catch (err) { console.log("33333" );
+//   console.log(err);
+//   res.status(500).send(err);
+// }
+// }
 
-    // else {
-    //   try { console.log("44444" );
-    //     const SearchExtendedResults =  SearchExtended(req,res)
-    //     res.send( SearchExtendedResults);
-    
-    //   } catch (err) { console.log("55555" );
-    //     console.log(err);
-    //     res.status(500).send(err);
-    //   }
+// else {
+//   try { console.log("44444" );
+//     const SearchExtendedResults =  SearchExtended(req,res)
+//     res.send( SearchExtendedResults);
 
+//   } catch (err) { console.log("55555" );
+//     console.log(err);
+//     res.status(500).send(err);
+//   }
 
-    // }
+// }
 
-
-    
-
-
-
-// router.get("/:Specie", (req, res) => {
-router.get("/Specie", (req, res) => {
-  try {
-    console.log("11111");
-    const allPets = readOnlySpecie(req);
-    res.send(allPets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
-
-router.get("/search", (req, res) => {
-
-  console.log("req.query");
-  console.log(req.query);
-});
+//  router.get("/Specie", (req, res) => {
+//   try {
+//     console.log("11111");
+//     const allPets = readOnlySpecie(req);
+//     res.send(allPets);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send(err);
+//   }
+// });
 
 // router.get("/extendedSearch/:hight=:breed", (req, res) => {
 //   try {
@@ -107,19 +127,6 @@ router.get("/search", (req, res) => {
 //   }
 // });
 
-router.get("/id/:petId", (req, res) => {
-  try {
-    console.log("id");
-    const allPets = readThisId(req);
-    res.send(allPets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
-
-
-
 // router.delete('/:petID', (req, res) => {
 //     console.log("start del in server");
 //     console.log(petID);
@@ -133,19 +140,3 @@ router.get("/id/:petId", (req, res) => {
 // router.get('/:petID', (req, res) => {
 //     res.send("hi from pets - get Id")
 // })
-
-router.post("/ForEach", (req, res) => {
-  try {
-    console.log("ForEach");
-    const petAdded = ForEach(req); //   אם זה קרה והוא החזיר  חיובי
-    if (ForEach) {
-      res.send("ssssss");
-    }
-    res.send(req.body); // send it back to the front
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
-
-module.exports = router;
