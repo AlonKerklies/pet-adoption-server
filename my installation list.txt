@@ -24,7 +24,7 @@ npm install knex -g
  npm install cookie-parser
 npm install multer 
 npm install cloudinary
-
+npm install multer-storage-cloudinary
   ///////////////  client ////////////////
 
   npx create-react-app my-app-in-small-letters

@@ -44,7 +44,7 @@ const login = async (req, res) => {
         console.log("----------------------token--------",token);
         res.cookie('token', token,{maxAge: 86000000 , httpOnly: true });  
         res.cookie('firstName', user.firstName,{maxAge: 86000000 , httpOnly: true });  
-        res.send({ok:true , token: token,   firstName: user.firstName,   email: user.email,  type: user.type   });
+        res.send({ok:true , token: token,   firstName: user.firstName, id: user.id,    type: user.type   });
         // console.log("res.cookie--------",res.cookie);
         // console.log("res.send--------",res.send);
        }

@@ -5,7 +5,17 @@ const { validateNewUserBody, isPasswordMatch, isNewUser, hashPassword , doesThis
   const { userSignUpSchema } = require("../schemas/userSignUpSchema");
 const UsersController = require("../controllers/UsersController");
 
- (req, res, next) => { console.log(" users Routes");  next();},  
+// const path = require('path');
+// const pathToTmp = path.resolve(__dirname, './tmp.html');
+
+
+ (req, res, next) => {
+// console.log(" users Routes"); 
+// console.log(" sendfile"); 
+// res.sendfile(pathToTmp)
+ next();},  
+
+
 
 router.post( "/signup", validateNewUserBody(userSignUpSchema), isPasswordMatch, isNewUser, hashPassword, UsersController.signup);
 

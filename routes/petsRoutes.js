@@ -16,12 +16,14 @@ const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 const { auth}  = require ('../middleware/usersMiddleware')
 const petsController = require("../controllers/petController");
-const {upload} = require('../middleware/imageMiddleware');
+const {upload, generateUrl} = require('../middleware/imageMiddleware');
 // const { addPet } = require("../controllers/petController");
 ///TODO: Add: add validation middleware to POST and PUT
 ///TODO: Add:async after "router.post"
 
-router.post("/",auth, upload.single('picture'),  petsController.addPet); //'picture' isthe name in the formdata
+router.post("/",auth, upload.single('imageUrl'),
+  generateUrl,
+  petsController.addPet); //'picture' isthe name in the formdata
 
 router.get("/", petsController.getAllpet);
 

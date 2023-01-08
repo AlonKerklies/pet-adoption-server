@@ -13,7 +13,7 @@ exports.up = function(knex) {
     table.string('adoptionStatus');
     table.string('dietaryRestrictions');
     table.string('userId');
-    table.string('picture');
+    table.string('imageUrl');
     table.timestamp('dateCreated').defaultTo(knex.fn.now());
 
   })

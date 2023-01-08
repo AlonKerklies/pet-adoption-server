@@ -66,14 +66,12 @@ const doesThisUserExistInSQL = async (req, res, next) => {
 const auth = (req ,res ,next) => {
 console.log("go to auth"); 
 // console.log("req.cookies", req.cookies); 
-console.log("req.headers----------", req.headers); 
-console.log("req.headers.authorization----------", req.headers.authorization); 
-
+// console.log("req.headers.authorization----------", req.headers.authorization); 
 if(!req.headers.authorization){res.status(401).send('where is your authorization headers?')
 return}
 const token = req.headers.authorization.replace('Bearer ','')
 jwt.verify(token, process.env.TOKEN_SECRET , function(err, decoded) {
-console.log("11111111111111111111")
+ 
 if (err) {console.log(err); res.status(401).send('invalid token!!!'); return }   
   if ( decoded) { req.body.userId = decoded.id; next(); }
 

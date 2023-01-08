@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 8080; // console.log(process.env);
 app.use(express.json()); // without this we cant get requests body
 app.use(cookieParser());
-
+app.use('/images',express.static('petsImages')); //first is the for the path // second is the folder
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));//  allow the front access to here with another port
 // app.use(morgan("tiny"));
 
@@ -25,7 +25,7 @@ app.use(cors({origin: 'http://localhost:3000', credentials: true}));//  allow th
 // });
 
 app.use((req, res, next) => {
-  console.log("xxxxxxxxxxxxxxxxx");
+  console.log("test");
   next();
 });
 
@@ -48,7 +48,7 @@ dbConnection.migrate.latest().then((migration) => {
   if (migration) {
     console.log("connected to DB", migration);
     app.listen(PORT, () => {
-      console.log(`Server Listening on ${PORT} -- info from ENV`);
+      console.log(`Server Listening on ${PORT} -- Reedy to Work`);
     });
   }
 });
