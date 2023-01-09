@@ -41,12 +41,11 @@ const login = async (req, res) => {
         res.status(400).send("Password incorrect");
       } else {
         const token = jwt.sign({ id: user.id, type: user.type   }, process.env.TOKEN_SECRET, { expiresIn: "2d",});
-        console.log("----------------------token--------",token);
+ 
         res.cookie('token', token,{maxAge: 86000000 , httpOnly: true });  
         res.cookie('firstName', user.firstName,{maxAge: 86000000 , httpOnly: true });  
         res.send({ok:true , token: token,   firstName: user.firstName, id: user.id,    type: user.type   });
-        // console.log("res.cookie--------",res.cookie);
-        // console.log("res.send--------",res.send);
+  
        }
  
 });

@@ -61,3 +61,9 @@ dbConnection.migrate.latest().then((migration) => {
 //   console.log(`middleware`);
 //   next();
 // });
+
+
+// DELETE FROM `petadoption`.`pets` WHERE (`id` = '12');
+// UPDATE `petadoption`.`pets` SET `type` = 'cat' WHERE (`id` = '15');
+// UPDATE `petadoption`.`pets` SET `type` = 'dog' WHERE (`id` = '18');
+// UPDATE `petadoption`.`pets` SET `type` = 'dog' WHERE (`id` = '19');
