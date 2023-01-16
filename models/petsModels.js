@@ -3,6 +3,8 @@ const path = require("path"); // old connection to JSONfile
 const pathToPetsDB = path.resolve(__dirname, "../dataBase/petsDB.json"); // old connection to JSONfile
 const dbConnection = require("../knex/knex"); // the new connect to SQL
 
+
+//// start goood /////////
 async function readAllPetsModel() {
   try {
     const PetsList = await dbConnection.from("pets");
@@ -15,63 +17,7 @@ async function readAllPetsModel() {
   }
 }
 
-
-function readOnlySpecie(req, res) {
-  try {
-    const { Specie } = req.params;
-    const allPets = readAllPetsModel();
-    //  const updatedArray = allPets.filter((cccc) => cccc.type  == "Dog");
-    const updatedArray = allPets.filter((cccc) => cccc.type == Specie);
-    return updatedArray;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function SearchExtended(req, res) {
-  const reqQuery = req.query;
-  console.log("got to SearchExtended");
-  console.log("reqQuery", reqQuery);
-
-  // check it there a vakue in the neme key
-  if (reqQuery.petName === "") {
-    console.log(" petName is empty");
-  } else {
-    console.log("petName has a value", reqQuery.petName);
-  }
-
-  // delete every key that have no value
-  const reqQueryClean = { ...reqQuery };
-  for (const key in reqQueryClean) {
-    if (
-      reqQueryClean[key] === undefined ||
-      reqQueryClean[key] === null ||
-      reqQueryClean[key] === ""
-    ) {
-      delete reqQueryClean[key];
-    }
-  }
-
-  console.log("this is reqQueryClean type", reqQueryClean.type); //
-  const allPets = readAllPetsModel();
- 
-  return allPets;
-
-}
-
-function readThisId(req, res) {
-  try {
-    const { petId } = req.params;
-    const allPets = readAllPetsModel();
-    const onlyThisId = allPets.filter((cccc) => cccc.id == petId);
-    return onlyThisId;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-
-
+//// start goood /////////
 async function addPetModel(newPet) {
   try {
     const [id] = await dbConnection.from("pets").insert(newPet); // האיידי חוזר כרשימה עם פריט אחד
@@ -81,6 +27,42 @@ async function addPetModel(newPet) {
     console.log(err);
   }
 }
+ 
+
+
+// function SearchExtended(req, res) {
+//   const reqQuery = req.query;
+//   console.log("got to SearchExtended");
+//   console.log("reqQuery", reqQuery);
+
+//   // check it there a vakue in the neme key
+//   if (reqQuery.petName === "") {
+//     console.log(" petName is empty");
+//   } else {
+//     console.log("petName has a value", reqQuery.petName);
+//   }
+
+//   // delete every key that have no value
+//   const reqQueryClean = { ...reqQuery };
+//   for (const key in reqQueryClean) {
+//     if (
+//       reqQueryClean[key] === undefined ||
+//       reqQueryClean[key] === null ||
+//       reqQueryClean[key] === ""
+//     ) {
+//       delete reqQueryClean[key];
+//     }
+//   }
+
+//   console.log("this is reqQueryClean type", reqQueryClean.type); //
+//   const allPets = readAllPetsModel();
+ 
+//   return allPets;
+
+// }
+
+
+
 
 async function deletePetModel(petId) {
   console.log("this is the id ", petId);
@@ -92,7 +74,172 @@ async function deletePetModel(petId) {
   }
 }
 
-module.exports = { readAllPetsModel,  addPetModel,  deletePetModel, readOnlySpecie,  readThisId, SearchExtended };
+async function GetSinglePet(petId) {
+  console.log("GetSinglePet  - this is the id ", petId);
+  try {
+      const getedPet = await dbConnection.from('pets').where({id: petId}) 
+    return getedPet;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+//// start goood /////////
+ const GetPetsByType = async (petType) => {
+  console.log("this type", petType);
+  try {
+      const PetsByType = await dbConnection.from('pets').where({type: petType}) 
+       console.log("PetsByType-----------234--------", PetsByType);
+    return PetsByType;
+  } catch (err) {
+    console.log(err);
+  }
+}
+//// start goood /////////
+const GetPetsFromExtended = async (query) => {
+  console.log('queryssssssssssssss',query);
+  try {
+  if (query.petName  !== 'all'){
+    const PetsByQuery = await dbConnection.select('*')
+    .from('pets')
+    .where({ name: query.petName  })
+ 
+    console.log('PetsByQuery1',PetsByQuery);
+    return PetsByQuery;
+  }
+else{
+  let petType = { type: query.type}
+  if (query.type === 'all') {petType = {}}
+
+  let adoptionStatus = { adoptionStatus: query.adoptionStatus}
+  if (query.adoptionStatus === 'all') {adoptionStatus = {}}
+  
+  let minHight = '' ;  let maxHight = ''
+      if (query.height === 'small') { minHight = 0;  maxHight = 20; }
+  else if (query.height === 'medium') { minHight = 20;  maxHight = 40; }
+  else if (query.height === 'big') { minHight = 40;  maxHight = 999; } 
+  else    { minHight = 0;  maxHight = 999;   }
+
+  let minWeight = '' ;  let maxWeight = ''
+      if (query.weight === 'light') { minWeight = 0;  maxWeight = 15; }
+  else if (query.weight === 'medium') { minWeight = 16;  maxWeight = 35; }
+  else if (query.weight === 'heavy') { minWeight = 36;  maxWeight = 999; } 
+  else    { minWeight = 0;  maxWeight = 999; }
+
+  const PetsByQuery = await dbConnection.select('*')
+  .from('pets')
+  .where(petType)
+  .andWhere(adoptionStatus)
+  .andWhereBetween('height', [minHight,maxHight]).whereNotNull('height')
+  .andWhereBetween('weight', [minWeight,maxWeight]).whereNotNull('weight')
+  console.log('PetsByQuery2',PetsByQuery);
+  return PetsByQuery;
+}
+}catch (err) {
+  console.log(err);
+}}
+
+
+ 
+    function readThisId(req, res) {
+      try {
+        const { petId } = req.params;
+        const allPets = readAllPetsModel();
+        const onlyThisId = allPets.filter((cccc) => cccc.id == petId);
+        return onlyThisId;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+ 
+    async function addSaveToList(petId,userId) {
+      try {
+        console.log(" Save To List sql ","pet-",petId,"user-",userId );
+        // const [id] = await dbConnection.from("pets").insert(newPet);
+        const newSave ={pet_id:petId, user_id:userId };
+         const add = await dbConnection.from('user_like_pet').insert(newSave); // this will signup the user
+        return add;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    async function removeFromList(petId,userId) {
+      try { 
+        console.log(" remove from List  ","pet-",petId,"user-",userId );
+        // const [id] = await dbConnection.from("pets").insert(newPet);
+        // knex('table_name').where({ pet_id: 3, user_id: 1 }).del();
+
+          const removed = await dbConnection.from('user_like_pet').where({pet_id:petId, user_id:userId}).del();  
+        return removed;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+
+    async function ChangeStatus(petId,status) {
+      try {
+        const changedToAdopted = await dbConnection.from('pets').where({id: petId}).update({adoptionStatus:status});  
+        return changedToAdopted;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    async function ChangeOwnerId(petId,userId) {
+      try {
+        const changedAdopter = await dbConnection.from('pets').where({id: petId}).update({currentOwnedByUserID: userId});  
+        return ChangeOwnerId;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+   
+
+      const getSavedPetsOfThisUser = async (userId) =>{
+      try{
+      // const userLikedPets = await dbConnection.from('user_like_pet').select('pet_id').where({user_id: userId})   // comeback undefined
+        const userLikedPets = await dbConnection.from('user_like_pet')
+        .select('pet_id')
+        .where({user_id: userId})
+        .join('pets', 'user_like_pet.pet_id', '=', 'pets.id')
+        .select('pets.name', 'pets.breed', 'pets.adoptionStatus','pets.type', 'pets.id', 'pets.imageUrl' )  
+        return userLikedPets;
+      }catch(err){ 
+      console.log(err);
+      }}
+
+
+      
+
+      const getForsterOrAdoptOfThisUser = async (userId, searchFor) =>{
+        console.log(" inside getForsterPetsOfThisUser " );
+        console.log(" --------- searchFor ------" , searchFor );
+        try{
+        const userFosteredPets = await dbConnection.from('pets')
+        .select('id','name','breed','imageUrl','type','adoptionStatus')
+        .where({currentOwnedByUserID: userId})
+        .andWhere({adoptionStatus: searchFor})  
+          console.log(" userFosteredPets" , userFosteredPets);
+          return userFosteredPets;
+        }catch(err){ 
+        console.log(err);
+        }}
+
+
+module.exports = { readAllPetsModel, GetPetsFromExtended,  getSavedPetsOfThisUser,
+  addPetModel, getForsterOrAdoptOfThisUser,
+  ChangeStatus, 
+   deletePetModel, 
+  //  ChangeToAdopt,
+  ChangeOwnerId,
+  // readOnlySpecie,
+   GetPetsByType,
+   readThisId, addSaveToList,
+   removeFromList, 
+    GetSinglePet ,
+  };
 
 
 
@@ -155,3 +302,5 @@ module.exports = { readAllPetsModel,  addPetModel,  deletePetModel, readOnlySpec
 //     console.log(err);
 //   }
 // }
+
+

@@ -2,62 +2,47 @@
 
 const express = require("express");
 const crypto = require("crypto");
-const {
-  TakeID,
-  ForEach,
-  addPetModel,
-  readThisId,
-  readAllPetsModel,
-  deletePetModel,
-  readOnlySpecie,
-  SearchExtended,
-} = require("../models/petsModels");
+// const {
+//   TakeID,
+//   ForEach,
+//   addPetModel,
+//   readThisId,
+//   readAllPetsModel,
+//   deletePetModel,
+//   // readOnlySpecie,
+//   // SearchExtended,
+// } = require("../models/petsModels");
 const router = express.Router();
-const { v4: uuidv4 } = require("uuid");
-const { auth}  = require ('../middleware/usersMiddleware')
+// const { v4: uuidv4 } = require("uuid");
+const { auth, AdminAuth}  = require ('../middleware/usersMiddleware')
+const { isAlreadySaved}  = require ('../middleware/petsMiddleware')
 const petsController = require("../controllers/petController");
 const {upload, generateUrl} = require('../middleware/imageMiddleware');
 // const { addPet } = require("../controllers/petController");
 ///TODO: Add: add validation middleware to POST and PUT
 ///TODO: Add:async after "router.post"
 
-router.post("/",auth, upload.single('imageUrl'),
-  generateUrl,
-  petsController.addPet); //'picture' isthe name in the formdata
+router.post("/",AdminAuth, upload.single('imageUrl'), generateUrl, petsController.addPet); //'picture' isthe name in the formdata
 
-router.get("/", petsController.getAllpet);
+router.put("/:petId", AdminAuth, upload.single('imageUrl'), generateUrl, petsController.editPet);
 
-router.delete("/:petId",   petsController.deletePet);
+router.get("/",    petsController.getPets);
 
-router.get("/search", (req, res) => {
-  console.log("req.query");
-  console.log(req.query);
-});
+router.get("/:petId",   petsController.getPet);
 
-router.get("/id/:petId", (req, res) => {
-  try {
-    console.log("id");
-    const allPets = readThisId(req);
-    res.send(allPets);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
+router.delete("/:petId",  auth, petsController.deletePet);
 
-router.post("/ForEach", (req, res) => {
-  try {
-    console.log("ForEach");
-    const petAdded = ForEach(req); //   אם זה קרה והוא החזיר  חיובי
-    if (ForEach) {
-      res.send("ssssss");
-    }
-    res.send(req.body); // send it back to the front
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
+router.post("/:petId/adopt", auth, petsController.adoptPet);
+
+router.post("/:petId/foster", auth, petsController.fosterPet);
+
+router.post("/:petId/return", auth, petsController.returnPet); 
+
+router.post("/:petId/save",auth,    isAlreadySaved, petsController.savePet);
+
+router.delete("/:petId/save", auth,  petsController.deleteSavedPet);
+
+router.get("/user/:userId", petsController.getUserPets); // get all your owned&saved pets
 
 module.exports = router;
 
@@ -142,3 +127,18 @@ module.exports = router;
 // router.get('/:petID', (req, res) => {
 //     res.send("hi from pets - get Id")
 // })
+
+
+// router.post("/ForEach", (req, res) => {
+  //   try {
+  //     console.log("ForEach");
+  //     const petAdded = ForEach(req); //   אם זה קרה והוא החזיר  חיובי
+  //     if (ForEach) {
+  //       res.send("ssssss");
+  //     }
+  //     res.send(req.body); // send it back to the front
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).send(err);
+  //   }
+  // });

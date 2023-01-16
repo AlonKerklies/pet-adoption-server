@@ -1,6 +1,6 @@
 
-exports.up = function(knex) {
-  return knex.schema.createTable('pets', (table)=>{
+exports.up =  async  (knex) =>{
+  await knex.schema.createTable('pets', (table)=>{
     table.increments('id').primary();
     table.string('type').notNull();
     table.string('name').notNull();
@@ -12,21 +12,17 @@ exports.up = function(knex) {
     table.string('hypoallergnic');
     table.string('adoptionStatus');
     table.string('dietaryRestrictions');
-    table.string('userId');
+    table.string('currentOwnedByUserID');
+    // table.string('userId');
     table.string('imageUrl');
+    
     table.timestamp('dateCreated').defaultTo(knex.fn.now());
 
   })
 };
 
-exports.down = function(knex) {
-  return knex.schema.droTable('pets');
+ 
+exports.down = async  (knex) => {
+  await knex.schema.dropTable('pets');
 };
-
-// /**
-//  * @param { import("knex").Knex } knex
-//  * @returns { Promise<void> }
-//  *//**
-//  * @param { import("knex").Knex } knex
-//  * @returns { Promise<void> }
-//  */
+ 

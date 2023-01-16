@@ -1,7 +1,8 @@
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
-const { validateNewUserBody, isPasswordMatch, isNewUser, hashPassword , doesThisUserExistInSQL} = require("../middleware/usersMiddleware");
+const { auth}  = require ('../middleware/usersMiddleware')
+const { validateNewUserBody, isPasswordMatch, isNewUser, hashPassword , doesThisUserExistInSQL ,AdminAuth} = require("../middleware/usersMiddleware");
   const { userSignUpSchema } = require("../schemas/userSignUpSchema");
 const UsersController = require("../controllers/UsersController");
 
@@ -19,7 +20,12 @@ const UsersController = require("../controllers/UsersController");
 
 router.post( "/signup", validateNewUserBody(userSignUpSchema), isPasswordMatch, isNewUser, hashPassword, UsersController.signup);
 
-router.post( "/login", doesThisUserExistInSQL,  UsersController.login );
+router.post( "/login", doesThisUserExistInSQL, UsersController.login );
+
+router.get("/",  auth, UsersController.readAllUsersModel);
+
+router.get("/:userId/full", auth,  UsersController.getUser);
+
 // checkIfUserExistsforLogin, 
 //  checkPasswordMatch,
 module.exports = router;
