@@ -123,37 +123,4 @@ const login = async (req, res, next) => {
 module.exports = { signup ,login ,readAllUsersModel, getUser ,updateUser };
 
 
-
-
-//  
-   
-// (req, res) => {
-//     try {
-//       res.send("user match with password");
-
-//       // res.send(200);
-//     } catch (err) {
-//       console.log(err);
-//       res.status(500).send(err);
-//     }
-//   }
-
-// function deletePet(req, res) {
-//   const { petId } = req.params;
-//   const deleted = deletePetModel(petId);
-//   if (deleted) {
-//     res.send({ ok: true, deletedId: petId });
-//   }
-// }
-
-// function addPet(req, res) {
-//     const { petId } = req.params;
-//     const deleted = deletePetModel(petId);
-//     if (deleted) {
-//       res.send({ ok: true, deletedId: petyId });
-//     }
-//   }
-
-// module.exports = {deletePet, addPet}
-
  

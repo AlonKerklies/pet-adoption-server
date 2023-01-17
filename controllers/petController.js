@@ -1,4 +1,4 @@
-const { addPetModel, readAllPetsModel, deletePetModel,GetSinglePet , GetPetsByType , ChangeOwnerId,getSavedPetsOfThisUser,
+const { addPetModel, readAllPetsModel, deletePetModel,GetSinglePet , GetPetsByType , ChangeOwnerId,getSavedPetsOfThisUser,changePetDetails,
   ChangeStatus, addSaveToList, GetPetsFromExtended, getForsterOrAdoptOfThisUser, removeFromList} = require("../models/petsModels");
 const crypto = require("crypto");
  
@@ -128,23 +128,27 @@ const addPet = async (req, res ,next) => {
   }
 };
 
-const editPet = async (req, res ,next) => {
-  console.log("i get it from the front1111111111111", req.body);
-  // try {
-  //   console.log("i get it from the front", req.body);
-  //   const id = await addPetModel(req.body); //   אם זה קרה והוא החזיר  חיובי
-  //   if (id) {
-  //     const newPetWithId ={ ...req.body, id: id, } 
-  //     res.send(newPetWithId);
-  //   } //  החיה עם ה איי.די והתאריך תחזור לפרונט
-  // } catch (err) {
-  //   console.log(err);
-  //   // res.status(500).send(err);
-  //   err.statusCode = 500
-  //   next(err);
-  // }
-};
 
+async function editPet (req, res, next) {
+ 
+  try{
+   const { petId  } = req.params
+   const changed = await changePetDetails(petId, req );
+ console.log('changed',changed);
+  if(changed){res.send({ok: true, newDeatails:changed})}
+  }catch (err) { 
+         res.status(500).send(err)
+        // err.statusCode = 500
+        // next(err);
+    };
+    }
+
+
+
+
+
+
+ 
 //// start goood /////////
 const getPets = async (req, res, next) => {
 

@@ -48,7 +48,7 @@ console.log('good contune' );
  
 function validateNewUserBody(schema) {
   return (req, res, next) => {
-    // const data = {foo: 1, bar: "abc"}
+ 
     const valid = ajv.validate(schema, req.body);
     if (!valid) {
       res.status(400).send(ajv.errors[0].message);
@@ -118,9 +118,6 @@ const auth = (req, res, next) => {
 };
 
 const AdminAuth = (req, res, next) => {
-  console.log(" ---AdminAuth---");
-  // console.log(" ---req.data---",req.data );
-  console.log("go to auth---.authorization---", req.headers.authorization);
   if (!req.headers.authorization) {
     res.status(401).send("where is your authorization headers?");
     return;

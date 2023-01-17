@@ -41,6 +41,8 @@ require('dotenv').config();
     console.log('upload = multersssssss');
   const generateUrl = (req, res, next) =>{
     console.log('generateUrl = multersssssss'); 
+    console.log("i get it from the front", req.body);
+    console.log('req.file',req.file); 
     req.body.imageUrl = req.file.path;
      console.log("-generateUrl--req.file.path-",req.file.path);
     next();

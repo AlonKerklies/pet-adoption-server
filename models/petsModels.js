@@ -28,42 +28,7 @@ async function addPetModel(newPet) {
   }
 }
  
-
-
-// function SearchExtended(req, res) {
-//   const reqQuery = req.query;
-//   console.log("got to SearchExtended");
-//   console.log("reqQuery", reqQuery);
-
-//   // check it there a vakue in the neme key
-//   if (reqQuery.petName === "") {
-//     console.log(" petName is empty");
-//   } else {
-//     console.log("petName has a value", reqQuery.petName);
-//   }
-
-//   // delete every key that have no value
-//   const reqQueryClean = { ...reqQuery };
-//   for (const key in reqQueryClean) {
-//     if (
-//       reqQueryClean[key] === undefined ||
-//       reqQueryClean[key] === null ||
-//       reqQueryClean[key] === ""
-//     ) {
-//       delete reqQueryClean[key];
-//     }
-//   }
-
-//   console.log("this is reqQueryClean type", reqQueryClean.type); //
-//   const allPets = readAllPetsModel();
  
-//   return allPets;
-
-// }
-
-
-
-
 async function deletePetModel(petId) {
   console.log("this is the id ", petId);
   try {
@@ -227,14 +192,23 @@ else{
         console.log(err);
         }}
 
+        async function changePetDetails(petId,req ) {
+          const { name, breed ,color, height, weight, bio, hypoallergnic, adoptionStatus, dietaryRestrictions  } =  req.body
+          try {
+          const changedDetails = await dbConnection.from('pets')
+          .where({id: petId})
+          .update({name: name, breed: breed, color: color, height: height, weight: weight, bio: bio, hypoallergnic: hypoallergnic, adoptionStatus: adoptionStatus, dietaryRestrictions: dietaryRestrictions,  });  
+          return changedDetails;
+         } catch (err) {
+           console.log(err);
+         }
+         }
 
-module.exports = { readAllPetsModel, GetPetsFromExtended,  getSavedPetsOfThisUser,
+module.exports = { readAllPetsModel, GetPetsFromExtended,  getSavedPetsOfThisUser, changePetDetails,
   addPetModel, getForsterOrAdoptOfThisUser,
   ChangeStatus, 
    deletePetModel, 
-  //  ChangeToAdopt,
   ChangeOwnerId,
-  // readOnlySpecie,
    GetPetsByType,
    readThisId, addSaveToList,
    removeFromList, 
