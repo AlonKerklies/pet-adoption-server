@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const {   addUserModel , GetSingleUser} = require("../models/userModels");
+const {   addUserModel , GetSingleUser, changeUserDetails} = require("../models/userModels");
 const dbConnection = require("../knex/knex"); // the new connect to SQL
 
 
@@ -21,19 +21,21 @@ if(getTheUser){res.send(getTheUser);}
     };
   }
   
+  async function updateUser (req, res, next) {
 
-// async function getPet(req, res, next) {
-//   try{
-//   const { petId } = req.params;
-//   const getThePet = await GetSinglePet(petId);
-//   if (getThePet) {
-//     res.send(getThePet);
-//   }}catch (err) { 
-//     // res.status(500).send(err)
-//     err.statusCode = 500
-//     next(err);
-//   };
-// }
+    console.log('updateUser');
+    try{
+    const userId = req.params['userId'] 
+     const changed = await changeUserDetails(userId, req );
+     console.log('changed',changed);
+     if(changed){res.send({ok: true, newDeatails:changed})}
+    }catch (err) { 
+           res.status(500).send(err)
+          // err.statusCode = 500
+          // next(err);
+      };
+      }
+ 
 
 
 
@@ -118,7 +120,7 @@ const login = async (req, res, next) => {
 
 
 
-module.exports = { signup ,login ,readAllUsersModel, getUser };
+module.exports = { signup ,login ,readAllUsersModel, getUser ,updateUser };
 
 
 

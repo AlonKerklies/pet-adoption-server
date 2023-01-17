@@ -40,14 +40,41 @@ async function GetSingleUser(userId) {
   }
 }
 
+async function changeUserDetails(userId,req ) {
+
+ try {
+const {lastName,firstName,email,phone,bio} = req.body
+
+ const changedDetails = await dbConnection.from('users')
+ .where({id: userId})
+ .update({firstName: firstName, lastName: lastName ,email:email, phone:phone, bio:bio });  
+ return changedDetails;
+} catch (err) {
+  console.log(err);
+}
+}
+ 
+
+
+
+
+const isEmailBelongToOther = async (email,userId) =>{
+  console.log(" inside isEmailBelongToOther " );
+  try{  
+ const user = await dbConnection.from('users').where({email: email}).whereNot({id: userId});   
+
+ return user
+  }catch(err){
+    console.log(err);
+
+}
+}
 
 
 
 
 
-
-
-  module.exports = {   addUserModel,   getUserByEmailModel , GetSingleUser,   };
+  module.exports = {   addUserModel,   getUserByEmailModel , GetSingleUser, isEmailBelongToOther , changeUserDetails };
 
 /////// old
 //   function doesThisUserExist  (userMail) {

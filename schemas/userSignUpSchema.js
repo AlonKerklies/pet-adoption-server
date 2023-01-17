@@ -3,8 +3,9 @@ const userSignUpSchema = {
 
   properties: {
     firstName: { type: "string" },
+    email: { type: "string" },
   },
-  required: ["firstName"],
+  required: ["firstName","email"],
   additionalProperties: true,
 };
 

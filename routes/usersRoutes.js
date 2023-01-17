@@ -2,7 +2,7 @@ const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
 const { auth}  = require ('../middleware/usersMiddleware')
-const { validateNewUserBody, isPasswordMatch, isNewUser, hashPassword , doesThisUserExistInSQL ,AdminAuth} = require("../middleware/usersMiddleware");
+const { validateNewUserBody, isPasswordMatch, isNewUser, hashPassword , doesThisUserExistInSQL ,AdminAuth, isNewEmailAlredyExist} = require("../middleware/usersMiddleware");
   const { userSignUpSchema } = require("../schemas/userSignUpSchema");
 const UsersController = require("../controllers/UsersController");
 
@@ -22,9 +22,11 @@ router.post( "/signup", validateNewUserBody(userSignUpSchema), isPasswordMatch, 
 
 router.post( "/login", doesThisUserExistInSQL, UsersController.login );
 
-router.get("/",  auth, UsersController.readAllUsersModel);
+router.get("/",  AdminAuth, UsersController.readAllUsersModel);
 
 router.get("/:userId/full", auth,  UsersController.getUser);
+
+router.put("/:userId", auth,  validateNewUserBody(userSignUpSchema),  isNewEmailAlredyExist,  UsersController.updateUser);
 
 // checkIfUserExistsforLogin, 
 //  checkPasswordMatch,

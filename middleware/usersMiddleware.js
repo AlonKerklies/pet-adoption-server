@@ -7,6 +7,7 @@ require("dotenv").config();
 const {
   doesThisUserExist,
   getUserByEmailModel,
+  isEmailBelongToOther,
 } = require("../models/userModels");
 
 const isNewUser = async (req, res, next) => {
@@ -24,6 +25,27 @@ const isNewUser = async (req, res, next) => {
   next();
 };
 
+const isNewEmailAlredyExist = async (req, res, next) => {
+  const userId = req.params['userId'] 
+  const {email} = req.body
+  const user = await isEmailBelongToOther (email,userId);
+// if its comeback empty array its his mail or no mail like this exits , can use it
+  if (user.length === 0) { // for back empty array
+  console.log(" ok its comeback empty array its his mail or no mail like this exits , can use it " );
+  next();
+  }
+  else{   
+  // const err = new Error("this email already exists in this application1!");
+  // err.statusCode = 400;
+  // next(err);
+   res.status(400).send("this email already exists in this application");
+    return console.log(" this mail belong to other user" );  ``
+}
+// next();
+console.log('good contune' );  
+  }
+
+ 
 function validateNewUserBody(schema) {
   return (req, res, next) => {
     // const data = {foo: 1, bar: "abc"}
@@ -123,6 +145,10 @@ const AdminAuth = (req, res, next) => {
   });
 };
 
+
+
+
+
 module.exports = {
   validateNewUserBody,
   isPasswordMatch,
@@ -131,6 +157,7 @@ module.exports = {
   doesThisUserExistInSQL,
   auth,
   AdminAuth,
+  isNewEmailAlredyExist,
 };
 
 // function checkIfUserExistsforSignUP(req, res, next) {
@@ -145,3 +172,27 @@ module.exports = {
 //   }
 //   next();
 // }
+
+
+
+
+// const isNewEmailAlredyExist = async (req, res, next) => {
+//   const userId = req.params['userId'] 
+//   const {email} = req.body
+//   const user = await isEmailBelongToOther (email,userId);
+// // if its comeback empty array its his mail or no mail like this exits , can use it
+//   if (user.length === 0) { // for back empty array
+//   console.log(" ok its comeback empty array its his mail or no mail like this exits , can use it " );
+//   next();
+//   }
+//   else{ console.log(" this mail belong to other user " );    
+//   const err = new Error("this email already exists in this application1");
+//   console.log(err);  
+//   err.statusCode = 400;
+//   next(err);
+//    res.status(400).send("this email already exists in this application2");
+//     return;
+
+// }
+// next();
+//   }
