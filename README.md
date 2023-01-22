@@ -30,6 +30,11 @@ in the terminal:
 
 - npm install
 - nodemon server
-- download and install : 'pet-adoption-client' from my github repository
+
+for the frontend:
+
+- clone: 'pet-adoption-client' from my github repository:
+git clone https://github.com/AlonKerklies/pet-adoption-client.git
+ 
 
 ### Enjoy

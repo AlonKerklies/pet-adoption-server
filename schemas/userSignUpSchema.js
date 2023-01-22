@@ -9,6 +9,5 @@ const userSignUpSchema = {
   additionalProperties: true,
 };
 
-
 module.exports = {userSignUpSchema}
 
