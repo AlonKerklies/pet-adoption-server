@@ -157,6 +157,44 @@ module.exports = {
   isNewEmailAlredyExist,
 };
 
+
+
+// const AdminAuth = (req, res, next) => {
+//   if (!req.headers.authorization) {
+//     res.status(401).send("where is your authorization headers?");
+//     return;
+//   }
+//   const token = req.headers.authorization.replace("Bearer ", "");
+//   jwt.verify(token, process.env.TOKEN_SECRET, function (err, decoded) {
+//     if (err) {
+//       console.log(err);
+//       res.status(401).send("invalid token!!!");
+//       return;
+//     }
+//     else if (decoded && decoded.type !== 'Admin') {
+//       res.status(401).send("Unauthorize action!");
+//     }
+//     else if (decoded) {
+//       req.body.type = decoded.type;
+//       req.body.userId = decoded.id;
+//   console.log("decoded.type",decoded.type);    
+//       next();
+//     }
+
+//   });
+// };
+
+
+
+
+
+
+
+
+
+
+
+
 // function checkIfUserExistsforSignUP(req, res, next) {
 //   // console.log(req.body.email);
 //   const { email } = req.body;
