@@ -11,4 +11,4 @@ const userSignUpSchema = {
 
 
 module.exports = {userSignUpSchema}
-//   foo: {type: "integer"},
+

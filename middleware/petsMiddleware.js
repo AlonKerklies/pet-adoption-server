@@ -41,28 +41,8 @@ const isAlreadySaved = async (req, res, next) => {
       res.send("already liked");return }
        else{next()}
     }
-
  
-
-
-
-
-    // const Liked = await dbConnection.from('user_like_pet')
-    // .where({pet_id: petId})
-    // .andWhere({user_id: userId}).first();   
-    // if (Liked) { // for back empty undefined  
-    //   console.log("there is like for this pet", Liked);
-    //   // const err = new Error("this email already exists in this application")
-    //   // err.statusCode = 400
-    //   // next(err);
-    //    return;
-    // }
-    // // next()
   };
-
-
-
-
 
 
 module.exports = {  isAlreadySaved  };

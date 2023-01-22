@@ -119,7 +119,7 @@ const addPet = async (req, res ,next) => {
     if (id) {
       const newPetWithId ={ ...req.body, id: id, } 
       res.send(newPetWithId);
-    } //  החיה עם ה איי.די והתאריך תחזור לפרונט
+    } 
   } catch (err) {
     console.log(err);
     // res.status(500).send(err);
@@ -203,16 +203,6 @@ else  {
       } 
       }catch (err) { res.status(500).send(err)};}
 
-// else if (searchFor === 'userAdoptedPets'){
-//       try{
-//       const SavedPets = await getSavedPetsOfThisUser(userId);
-//       if (SavedPets) {
-//       res.send(SavedPets);
-//       } 
-//       }catch (err) { res.status(500).send(err)};}
-
-
-
       
     };
     
@@ -220,7 +210,7 @@ else  {
 
 
 module.exports = { deletePet, addPet, adoptPet, fosterPet,returnPet,getUserPets,deleteSavedPet,editPet,
-  //  getAllpet , 
+
   getPet , savePet , getPets};
 
 
